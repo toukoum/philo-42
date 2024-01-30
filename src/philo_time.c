@@ -6,16 +6,16 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:28:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/01/30 12:43:29 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:19:19 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-void ft_wait(long long time_to_wait, t_table *table)
+void	ft_wait(long long time_to_wait, t_table *table)
 {
-	long long time;
-	
+	long long	time;
+
 	time = get_time() + time_to_wait;
 	while (!end_simu(table) && get_time() < time)
 		usleep(100);
@@ -23,7 +23,7 @@ void ft_wait(long long time_to_wait, t_table *table)
 
 /**
  * for getting current time in ms
-*/
+ */
 long long	get_time(void)
 {
 	struct timeval	current_time;

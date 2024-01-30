@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:24:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/01/30 14:02:08 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:21:56 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * check if a philo is dead
  * => time_since_last_meal > time_to_die
  */
-int	check_philo_dead(t_philo *philo)
+static int	check_philo_dead(t_philo *philo)
 {
 	size_t	t_since_last_meal;
 
@@ -26,17 +26,18 @@ int	check_philo_dead(t_philo *philo)
 	if (t_since_last_meal >= philo->table->time_to_die)
 	{
 		set_end_simu(philo->table);
-		usleep(100);
+		usleep(1000);
 		msg_log(philo, DIE);
 		return (1);
 	}
 	return (0);
 }
+
 /**
  * check if all philo has eaten enough 1 if all philo is ok
  * else 0
  */
-int	reach_end(t_table *table)
+static int	reach_end(t_table *table)
 {
 	size_t	i;
 	int		ate_enough;
@@ -61,6 +62,7 @@ int	reach_end(t_table *table)
 	else
 		return (0);
 }
+
 /**
  * check every 0.1ms if the philo is dead or if every philo has eaten enough
  * use the mutex last meal, and time_to_die to know
@@ -68,7 +70,7 @@ int	reach_end(t_table *table)
  */
 void	*handle_life(void *table_ptr)
 {
-	t_table *table;
+	t_table	*table;
 
 	table = (t_table *)table_ptr;
 	synch_start(table->start_time_simu);

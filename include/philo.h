@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 16:51:47 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/01/30 14:56:25 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:36:56 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
-# include <string.h>
 
 // ================ Struct ================
 typedef struct s_table	t_table;
@@ -65,10 +65,11 @@ enum
 };
 
 # define GREEN "\033[0;32m"
-# define BLUE "\033[0;34m"
+# define BLUE "\033[0;36m"
 # define YELLOW "\033[0;33m"
-# define RED "\033[0;31m"
-# define GREY "\033[1;30m"
+# define RED "\033[1;31m"
+# define CYAN "\033[0;35m"
+# define FLASH "\033[1;93m"
 # define NC "\033[0m"
 
 # define ARG_ERR 13

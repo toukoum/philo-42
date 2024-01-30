@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 16:52:02 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/01/30 15:31:18 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:22:39 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static long	ft_atoi_boost(const char *str, int *error)
 	return (result);
 }
 
-int	ft_init_mutex(t_table *table)
+static int	ft_init_mutex(t_table *table)
 {
 	if (pthread_mutex_init(&table->m_log, NULL))
 		return (1);
@@ -49,7 +49,7 @@ int	ft_init_mutex(t_table *table)
 	return (0);
 }
 
-void	assign_forks(t_philo *philo, size_t i)
+static void	assign_forks(t_philo *philo, size_t i)
 {
 	if (philo->rank % 2)
 	{
