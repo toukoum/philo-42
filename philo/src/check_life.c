@@ -6,13 +6,13 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:24:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/01/30 18:21:56 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:58:49 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-/**
+/**hilo_bonus
  * check if a philo is dead
  * => time_since_last_meal > time_to_die
  */

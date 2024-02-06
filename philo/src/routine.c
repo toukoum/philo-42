@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:27:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/01/30 18:23:29 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/01/31 12:54:17 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	*routine(void *philo_ptr)
 	if (philo->table->number_philo == 1)
 		return (alone_philo(philo));
 	if (philo->rank % 2)
-		ft_wait(10, philo->table);
+		ft_wait(philo->table->time_to_eat / 2, philo->table);
 	while (!end_simu(philo->table))
 	{
 		eat(philo);
