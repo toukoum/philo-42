@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:54:59 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 04:52:38 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/06 17:57:34 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
  */
 static int	launch_simulation(t_table *table)
 {
-	size_t i;
-	pid_t pid_fork;
-	
+	size_t	i;
+	pid_t	pid_fork;
+
 	i = 0;
 	while (i < table->number_philo)
 	{
@@ -43,19 +43,16 @@ static int	launch_simulation(t_table *table)
 	return (0);
 }
 
-
-
 int	main(int argc, char *argv[])
 {
 	t_table	table;
-	
+
 	unlink_my_sem();
 	if (ft_parse(argc, argv, &table))
 		return (msg_err(ARG_ERR));
 	table.start_time_simu = get_time() + (table.number_philo * 42);
 	sem_wait(table.sem_log);
-	printf("\n=> Start Simulation time:%s %zu%s\n\n", FLASH,
-		(size_t)0, NC);
+	printf("\n=> Start Simulation time:%s %zu%s\n\n", FLASH, (size_t)0, NC);
 	sem_post(table.sem_log);
 	if (launch_simulation(&table))
 		return (msg_err(SIMULATION_ERR));

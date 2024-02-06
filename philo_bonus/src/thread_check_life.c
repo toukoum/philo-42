@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:24:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 05:05:16 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/06 17:54:46 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static int	check_philo_dead(t_philo *philo)
 }
 
 /**
- * check if philo has eaten enough 
+ * check if philo has eaten enough
  */
 static int	eat_enough(t_philo *philo)
 {
-	int		ate_enough;
+	int	ate_enough;
 
 	ate_enough = 1;
 	if (philo->table->must_eat)
@@ -42,7 +42,6 @@ static int	eat_enough(t_philo *philo)
 		sem_post(philo->sem_count_meal);
 	}
 	return (philo->table->must_eat && ate_enough);
-
 }
 
 /**
@@ -52,7 +51,7 @@ static int	eat_enough(t_philo *philo)
  */
 void	*handle_life(void *philo_ptr)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
 	synch_start(philo->table->start_time_simu);

@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:54:59 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/01/30 18:37:10 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/06 18:39:36 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char *argv[])
 	table.start_time_simu = get_time() + (table.number_philo * 20);
 	pthread_mutex_lock(&table.m_log);
 	printf("\n=> Start Simulation time:%s %zu%s\n\n", FLASH,
-		table.start_time_simu, NC);
+		(size_t)0, NC);
 	pthread_mutex_unlock(&table.m_log);
 	if (launch_simulation(&table))
 		return (msg_err(SIMULATION_ERR));

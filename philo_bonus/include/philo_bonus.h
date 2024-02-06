@@ -6,13 +6,14 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 16:51:47 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 04:53:43 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/06 21:40:33 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
+# include <fcntl.h>     // FLAGS
 # include <limits.h>    // atoi boost, int_max
 # include <pthread.h>   // thread
 # include <semaphore.h> // semaphore
@@ -22,6 +23,8 @@
 # include <string.h>    // semaphore
 # include <sys/stat.h>  // O_CREAT flag sem
 # include <sys/time.h>  // usleep
+# include <sys/types.h> // O_CREAT
+# include <sys/wait.h>  // waitpid
 # include <unistd.h>    // fork
 
 // ================ Struct ================
@@ -95,12 +98,11 @@ int						msg_err(int key_error);
 long long				get_time(void);
 void					ft_wait(long long time_to_wait);
 
-// => logging
-void					msg_log(t_philo *philo, int code);
-
 // => utils.c
+void					msg_log(t_philo *philo, int code);
 void					synch_start(long long time_start);
 void					unlink_my_sem(void);
+char					*get_name_sem(size_t rank, char *name);
 
 // routine
 void					*handle_life(void *table_ptr);

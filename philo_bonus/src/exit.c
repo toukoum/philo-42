@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:33:19 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 05:23:04 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/06 22:41:23 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int	msg_err(int key_error)
 {
 	if (key_error == ARG_ERR)
 		printf("\033[1;31mError, please enter valid arguments.\033[0m\n\n"
-				" => \033[1;34m./philo <number_of_philo>"
-				" <time_to_die> <time_to_eat>"
-				" <time_to_sleep> [number_of_time_must_eat]\033[0m\n\n");
+			" => \033[1;34m./philo <number_of_philo>"
+			" <time_to_die> <time_to_eat>"
+			" <time_to_sleep> [number_of_time_must_eat]\033[0m\n\n");
 	else if (key_error == SIMULATION_ERR)
 		printf("\033[1;31mError with simulation !\033[0m\n\n");
 	else if (key_error == INIT_ERR)
@@ -59,12 +59,13 @@ int	msg_err(int key_error)
  */
 void	kill_all_philo(t_table *table)
 {
-	size_t i;
-	int status;
+	size_t	i;
+	int		status;
+
 	i = 0;
 	while (i < table->number_philo)
 	{
-		kill(table->child_pids[i], SIGTERM);
+		kill(table->child_pids[i], SIGKILL);
 		i++;
 	}
 	i = 0;

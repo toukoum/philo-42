@@ -4,7 +4,8 @@ CC := cc
 CFLAGS := -Wall -Werror -Wextra -g -pthread
 
 INCLUDE := -I include
-SRCS := $(wildcard src/*.c)
+SRCS := check_life.c exit.c parse.c philo_time.c philo_utils.c philo.c routine.c
+SRCS := $(addprefix src/, $(SRCS))
 OBJS :=  $(SRCS:.c=.o)
 
 RED=\033[0;31m

@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 11:23:12 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/01/31 13:04:24 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/06 17:56:46 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,23 @@ void	msg_log(t_philo *philo, int code)
 	if (end_simu(philo->table) && code != DIE)
 		code = -1;
 	if (code == EAT)
-		printf("%s%lld %zu is eating%s\n", GREEN, get_time(), philo->rank, NC);
+		printf("%s%lld %zu is eating%s\n", GREEN, get_time()
+			- philo->table->start_time_simu, philo->rank, NC);
 	else if (code == SLEEP)
-		printf("%s%lld %zu is sleeping%s\n", BLUE, get_time(), philo->rank, NC);
+		printf("%s%lld %zu is sleeping%s\n", BLUE, get_time()
+			- philo->table->start_time_simu, philo->rank, NC);
 	else if (code == THINK)
-		printf("%s%lld %zu is thinking%s\n", YELLOW, get_time(), philo->rank,
-			NC);
+		printf("%s%lld %zu is thinking%s\n", YELLOW, get_time()
+			- philo->table->start_time_simu, philo->rank, NC);
 	else if (code == DIE)
-		printf("%s%lld %zu died%s\n", RED, get_time(), philo->rank, NC);
+		printf("%s%lld %zu died%s\n", RED, get_time()
+			- philo->table->start_time_simu, philo->rank, NC);
 	else if (code == TAKE_FORK)
-		printf("%s%lld %zu has taken a fork%s\n", CYAN, get_time(), philo->rank,
-			NC);
+		printf("%s%lld %zu has taken a fork%s\n", CYAN, get_time()
+			- philo->table->start_time_simu, philo->rank, NC);
 	else if (code == WAIT_FORK)
-		printf("%s%lld %zu is wating for fork%s\n", YELLOW, get_time(),
-			philo->rank, NC);
+		printf("%s%lld %zu is wating for fork%s\n", YELLOW, get_time()
+			- philo->table->start_time_simu, philo->rank, NC);
 	pthread_mutex_unlock(&philo->table->m_log);
 }
 
