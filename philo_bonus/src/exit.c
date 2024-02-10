@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:33:19 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 22:41:23 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 15:34:40 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,25 @@
  * for wait child philo to finish
  * when fork() goes wrong
  */
-int	ft_wait_philo(int i, pid_t *child_pids)
+int	ft_wait_philo(int i, t_philo **philos)
 {
 	while (i > 0)
 	{
-		waitpid(child_pids[i - 1], NULL, 0);
+		waitpid(((*philos) + i)->pid_philo, NULL, 0);
 		exit(EXIT_FAILURE);
 		i--;
 	}
 	return (INIT_ERR);
 }
 
-void	ft_free(t_table *table)
+void	ft_free(t_table *table, t_philo **philos)
 {
-	free(table->child_pids);
 	sem_close(table->sem_forks);
-	sem_unlink("/forks");
 	sem_close(table->sem_log);
-	sem_unlink("/log");
 	sem_close(table->sem_eat_full);
-	sem_unlink("/eat_full");
 	sem_close(table->sem_end);
-	sem_unlink("/end");
+	sem_close(table->sem_set_end);
+	free(*philos);
 }
 
 int	msg_err(int key_error)
@@ -57,7 +54,7 @@ int	msg_err(int key_error)
 /**
  * kill all the philo by their pid
  */
-void	kill_all_philo(t_table *table)
+void	kill_all_philo(t_table *table, t_philo **philos)
 {
 	size_t	i;
 	int		status;
@@ -65,13 +62,15 @@ void	kill_all_philo(t_table *table)
 	i = 0;
 	while (i < table->number_philo)
 	{
-		kill(table->child_pids[i], SIGKILL);
+		sem_close(((*philos) + i)->sem_count_meal);
+		sem_close(((*philos) + i)->sem_last_meal);
+		kill(((*philos) + i)->pid_philo, SIGKILL);
 		i++;
 	}
 	i = 0;
 	while (i < table->number_philo)
 	{
-		waitpid(table->child_pids[i], &status, 0);
+		waitpid(((*philos) + i)->pid_philo, &status, 0);
 		i++;
 	}
 }

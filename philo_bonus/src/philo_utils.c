@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 11:23:12 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 20:51:00 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 15:33:40 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	msg_log(t_philo *philo, int code)
 {
-	sem_wait(philo->sem_log);
+	sem_wait(philo->table->sem_log);
 	if (code == EAT)
 		printf("%s%lld %zu is eating%s\n", GREEN, get_time()
 			- philo->table->start_time_simu, philo->rank, NC);
@@ -33,7 +33,7 @@ void	msg_log(t_philo *philo, int code)
 	else if (code == WAIT_FORK)
 		printf("%s%lld %zu is wating for fork%s\n", YELLOW, get_time()
 			- philo->table->start_time_simu, philo->rank, NC);
-	sem_post(philo->sem_log);
+	sem_post(philo->table->sem_log);
 }
 
 void	synch_start(long long time_start)
@@ -44,8 +44,7 @@ void	synch_start(long long time_start)
 
 void	unlink_my_sem(void)
 {
-	sem_unlink("/count_meal");
-	sem_unlink("/last_meal");
+	sem_unlink("/set_end");
 	sem_unlink("/forks");
 	sem_unlink("/log");
 	sem_unlink("/eat_full");

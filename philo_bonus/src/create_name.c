@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:51:10 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 21:25:16 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 15:34:58 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static char	*ft_itoa(size_t rank)
 	}
 	return (result);
 }
+
 /**
  * create an unique name for semaphore
  * concatenate the name and the rank

@@ -6,66 +6,92 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 21:34:44 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 17:57:26 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 15:45:57 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
 
 /**
- * fork the monitoring process for checking if
+ * thread the monitoring process for checking if
  * the global semaphore end is set to one
  * kill all philo if it's the case.
  */
-int	check_dead_philo(t_table *table)
+void	*check_dead_philo(void *philos_ptr)
 {
-	pid_t	pid_fork;
-	int		status;
+	t_philo	**philos;
+	t_table	*table;
 
-	pid_fork = fork();
-	if (pid_fork == -1)
-		return (kill_all_philo(table), 1);
-	if (pid_fork == 0)
-	{
-		synch_start(table->start_time_simu);
-		sem_wait(table->sem_end);
-		kill_all_philo(table);
-		exit(EXIT_SUCCESS);
-	}
-	waitpid(pid_fork, &status, 0);
-	return (pid_fork);
+	philos = (t_philo **)philos_ptr;
+	table = philos[0]->table;
+	synch_start(table->start_time_simu);
+	sem_wait(table->sem_end);
+	printf("kill !\n");
+	sem_wait(table->sem_set_end);
+	table->end = 1;
+	sem_post(table->sem_set_end);
+	kill_all_philo(table, philos);
+	return (NULL);
+}
+
+int	is_sim_end(t_table *table)
+{
+	int	bool_end;
+
+	bool_end = 0;
+	sem_wait(table->sem_set_end);
+	bool_end = table->end;
+	sem_post(table->sem_set_end);
+	return (bool_end);
 }
 
 /**
- * fork the monitoring process for checking if
+ * thread the monitoring process for checking if
  * all philo has enough eat
  */
-int	check_eat_enough(t_table *table)
-{
-	pid_t	pid_fork;
-	size_t	count;
+//void	*check_eat_enough(void *philos_ptr)
+//{
+//	t_philo	**philos;
+//	t_table	*table;
+//	size_t	count_meal;
 
-	pid_fork = fork();
-	if (pid_fork == -1)
-		return (kill_all_philo(table), 1);
-	if (pid_fork == 0)
-	{
-		count = 0;
-		synch_start(table->start_time_simu);
-		while (count < table->number_philo)
-		{
-			sem_wait(table->sem_eat_full);
-			count++;
-		}
-		sem_post(table->sem_end);
-		exit(EXIT_SUCCESS);
-	}
-	return (0);
-}
+//	count_meal = 0;
+//	philos = (t_philo **)philos_ptr;
+//	table = philos[0]->table;
+//	synch_start(table->start_time_simu);
+//	while (count_meal < table->number_philo)
+//	{
+//		if (is_sim_end(table))
+//			return (NULL);
+//		sem_wait(table->sem_eat_full);
+//		if (!is_sim_end(table))
+//			count_meal++;
+//		else
+//			return (NULL);
+//		usleep(1);
+//		printf("count meal: %zu\n", count_meal);
+//	}
+//	sem_post(table->sem_end);
+//	return (NULL);
+//}
 
-void	stop_simulation(t_table *table)
+void	stop_simulation(t_table *table, t_philo **philos)
 {
-	if (table->must_eat)
-		check_eat_enough(table);
-	check_dead_philo(table);
+	pthread_t	thread_death;
+	//pthread_t	thread_meal;
+
+	if (pthread_create(&thread_death, NULL, &check_dead_philo, philos))
+		kill_all_philo(table, philos);
+	//if (table->must_eat)
+	//{
+	//	if (pthread_create(&thread_meal, NULL, &check_eat_enough, philos))
+	//		kill_all_philo(table, philos);
+	//}
+	//if (table->must_eat)
+	//{
+	//	if (pthread_join(thread_meal, NULL))
+	//		kill_all_philo(table, philos);
+	//}
+	if (pthread_join(thread_death, NULL))
+		kill_all_philo(table, philos);
 }

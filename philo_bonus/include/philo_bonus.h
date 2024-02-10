@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 16:51:47 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 21:40:33 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 15:29:51 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,11 @@ typedef struct s_table	t_table;
 typedef struct s_philo
 {
 	size_t				rank;
+	pid_t				pid_philo;
 	long long			last_meal;
 	size_t				count_meal;
 	sem_t				*sem_last_meal;
 	sem_t				*sem_count_meal;
-	sem_t				*sem_forks;
-	sem_t				*sem_end;
-	sem_t				*sem_log;
-	sem_t				*sem_full;
 	pthread_t			handle_life;
 	t_table				*table;
 }						t_philo;
@@ -51,13 +48,14 @@ struct					s_table
 	sem_t				*sem_log;
 	sem_t				*sem_end;
 	sem_t				*sem_eat_full;
-	pid_t				*child_pids;
+	sem_t				*sem_set_end;
 	size_t				number_philo;
 	size_t				time_to_die;
 	size_t				start_time_simu;
 	size_t				time_to_eat;
 	size_t				time_to_sleep;
 	size_t				must_eat;
+	int					end;
 };
 
 enum
@@ -85,14 +83,14 @@ enum
 
 // => parse.c
 int						ft_parse(int argc, char **argv, t_table *table);
-int						init_process_philo(t_philo **philo, t_table *table,
-							size_t i);
+int						init_process_philo(t_philo *philo, size_t i,
+							t_table *table);
 
 // => exit.c
-void					ft_free(t_table *table);
-int						ft_wait_philo(int i, pid_t *child_pids);
-void					kill_all_philo(t_table *table);
+int						ft_wait_philo(int i, t_philo **philos);
+void					kill_all_philo(t_table *table, t_philo **philos);
 int						msg_err(int key_error);
+void					ft_free(t_table *table, t_philo **philos);
 
 // => time
 long long				get_time(void);
@@ -106,10 +104,10 @@ char					*get_name_sem(size_t rank, char *name);
 
 // routine
 void					*handle_life(void *table_ptr);
-int						routine_philosopher(t_table *table, size_t i);
+int						routine_philosopher(t_philo *philo);
 
 // check_life process / thread
 void					*handle_life(void *philo_ptr);
-void					stop_simulation(t_table *table);
+void					stop_simulation(t_table *table, t_philo **philos);
 
 #endif

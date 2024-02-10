@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:27:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 05:19:42 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 15:29:46 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@
  **/
 static void	eat(t_philo *philo)
 {
-	sem_wait(philo->sem_forks);
+	sem_wait(philo->table->sem_forks);
 	msg_log(philo, TAKE_FORK);
-	sem_wait(philo->sem_forks);
+	sem_wait(philo->table->sem_forks);
 	msg_log(philo, TAKE_FORK);
 	msg_log(philo, EAT);
 	sem_wait(philo->sem_last_meal);
 	philo->last_meal = get_time();
 	sem_post(philo->sem_last_meal);
 	ft_wait(philo->table->time_to_eat);
-	sem_post(philo->sem_forks);
-	sem_post(philo->sem_forks);
+	sem_post(philo->table->sem_forks);
+	sem_post(philo->table->sem_forks);
 	sem_wait(philo->sem_count_meal);
 	philo->count_meal++;
 	sem_post(philo->sem_count_meal);
@@ -73,11 +73,11 @@ static void	think(t_philo *philo)
 static int	alone_philo(t_philo *philo)
 {
 	synch_start(philo->table->start_time_simu);
-	sem_wait(philo->sem_forks);
+	sem_wait(philo->table->sem_forks);
 	msg_log(philo, TAKE_FORK);
-	sem_post(philo->sem_forks);
+	sem_post(philo->table->sem_forks);
 	ft_wait(philo->table->time_to_die);
-	sem_post(philo->sem_end);
+	sem_post(philo->table->sem_end);
 	msg_log(philo, DIE);
 	return (0);
 }
@@ -90,26 +90,27 @@ static int	alone_philo(t_philo *philo)
  *	from here, we are in child process <==> in philosopher body
  *
  */
-int	routine_philosopher(t_table *table, size_t i)
+int	routine_philosopher(t_philo *philo)
 {
-	t_philo	*philo;
+	size_t	count_meal_perso;
 
-	if (init_process_philo(&philo, table, i))
-		return (INIT_ERR);
+	count_meal_perso = 0;
 	if (philo->table->number_philo == 1)
 		return (alone_philo(philo));
 	if (pthread_create(&philo->handle_life, NULL, &handle_life, philo))
 		return (INIT_ERR);
-	synch_start(table->start_time_simu);
+	synch_start(philo->table->start_time_simu);
 	if (philo->rank % 2)
 		ft_wait(philo->table->time_to_eat);
 	while (1)
 	{
+		if (philo->table->must_eat
+			&& count_meal_perso >= philo->table->must_eat)
+			sem_post(philo->table->sem_eat_full);
 		eat(philo);
+		count_meal_perso++;
 		ft_sleep(philo);
 		think(philo);
 	}
-	if (pthread_join(philo->handle_life, NULL))
-		return (SIMULATION_ERR);
 	return (0);
 }

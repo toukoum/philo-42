@@ -1,7 +1,7 @@
 NAME := philo_bonus
 
-CC := cc 
-CFLAGS := -Wall -Werror -Wextra -g -pthread
+CC := gcc 
+CFLAGS := -Wall -Werror  -Wextra -g -pthread
 
 INCLUDE := -I include
 SRCS := exit.c philo.c parse.c philo_time.c philo_utils.c process_check_life.c thread_check_life.c routine.c create_name.c
