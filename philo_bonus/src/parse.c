@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 16:52:02 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/10 15:34:12 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 17:53:17 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,22 @@ static long	ft_atoi_boost(const char *str, int *error)
 int	ft_init_semaphore(t_table *table)
 {
 	unlink_my_sem();
-	table->sem_forks = sem_open("/forks", O_CREAT, 0644, table->number_philo);
+	table->sem_forks = sem_open("/forks", O_CREAT, S_IRUSR | S_IWUSR,
+			table->number_philo);
 	if (table->sem_forks == SEM_FAILED)
 		return (INIT_ERR);
-	table->sem_log = sem_open("/log", O_CREAT, 0644, 1);
+	table->sem_log = sem_open("/log", O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (table->sem_log == SEM_FAILED)
 		return (INIT_ERR);
-	table->sem_eat_full = sem_open("/eat_full", O_CREAT, 0644, 1);
+	table->sem_eat_full = sem_open("/eat_full", O_CREAT, S_IRUSR | S_IWUSR,
+			table->number_philo);
 	if (table->sem_eat_full == SEM_FAILED)
 		return (INIT_ERR);
-	table->sem_end = sem_open("/end", O_CREAT, 0644, 0);
+	table->sem_end = sem_open("/end", O_CREAT, S_IRUSR | S_IWUSR,
+			table->number_philo);
 	if (table->sem_end == SEM_FAILED)
 		return (INIT_ERR);
-	table->sem_set_end = sem_open("/set_end", O_CREAT, 0644, 1);
+	table->sem_set_end = sem_open("/set_end", O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (table->sem_set_end == SEM_FAILED)
 		return (INIT_ERR);
 	unlink_my_sem();
@@ -104,10 +107,10 @@ int	init_process_philo(t_philo *philo, size_t i, t_table *table)
 		return (INIT_ERR);
 	sem_unlink(sem_name_1);
 	sem_unlink(sem_name_2);
-	philo->sem_count_meal = sem_open(sem_name_1, O_CREAT, 0644, 1);
+	philo->sem_count_meal = sem_open(sem_name_1, O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (philo->sem_count_meal == SEM_FAILED)
 		return (INIT_ERR);
-	philo->sem_last_meal = sem_open(sem_name_2, O_CREAT, 0644, 1);
+	philo->sem_last_meal = sem_open(sem_name_2, O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (philo->sem_last_meal == SEM_FAILED)
 		return (INIT_ERR);
 	sem_unlink(sem_name_1);

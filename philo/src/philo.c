@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:54:59 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/06 18:39:36 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 17:47:03 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,6 @@ static int	launch_simulation(t_table *table)
 	return (0);
 }
 
-/**
- * normalement tout est bien initialise,
-	a tester dans routine avec une fonction simple.
- */
 int	main(int argc, char *argv[])
 {
 	t_table	table;

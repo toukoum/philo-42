@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:24:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/10 15:33:14 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 17:23:47 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ void	*handle_life(void *philo_ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_ptr;
-	synch_start(philo->table->start_time_simu + 10);
+	sem_wait(philo->table->sem_eat_full);
+	sem_wait(philo->table->sem_end);
+	synch_start(philo->table->start_time_simu);
 	while (1)
 	{
 		if (check_philo_dead(philo))

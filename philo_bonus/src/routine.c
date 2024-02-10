@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:27:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/10 15:29:46 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/10 17:26:17 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static void	think(t_philo *philo)
 
 static int	alone_philo(t_philo *philo)
 {
+	sem_wait(philo->table->sem_eat_full);
+	sem_wait(philo->table->sem_end);
 	synch_start(philo->table->start_time_simu);
 	sem_wait(philo->table->sem_forks);
 	msg_log(philo, TAKE_FORK);
