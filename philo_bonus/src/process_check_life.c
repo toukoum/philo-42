@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 21:34:44 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/10 17:26:42 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/11 09:58:26 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,6 @@ void	stop_simulation(t_table *table, t_philo **philos)
 	{
 		if (pthread_create(&thread_meal, NULL, &check_eat_enough, philos))
 			kill_all_philo(table, philos);
-	}
-	if (table->must_eat)
-	{
 		if (pthread_join(thread_meal, NULL))
 			kill_all_philo(table, philos);
 	}

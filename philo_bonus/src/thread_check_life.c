@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:24:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/10 17:23:47 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/11 10:39:39 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,24 @@ static int	check_philo_dead(t_philo *philo)
 	t_since_last_meal = get_time() - philo->last_meal;
 	sem_post(philo->sem_last_meal);
 	return (t_since_last_meal > philo->table->time_to_die);
+}
+
+/**
+ * check if philo has eaten enough
+ */
+static int	eat_enough(t_philo *philo)
+{
+	int	ate_enough;
+
+	ate_enough = 1;
+	if (philo->table->must_eat)
+	{
+		sem_wait(philo->sem_count_meal);
+		if (philo->count_meal < philo->table->must_eat)
+			ate_enough = 0;
+		sem_post(philo->sem_count_meal);
+	}
+	return (philo->table->must_eat && ate_enough);
 }
 
 /**
@@ -45,6 +63,11 @@ void	*handle_life(void *philo_ptr)
 		{
 			sem_post(philo->table->sem_end);
 			msg_log(philo, DIE);
+			return (NULL);
+		}
+		else if (eat_enough(philo))
+		{
+			sem_post(philo->table->sem_eat_full);
 			return (NULL);
 		}
 		usleep(1000);

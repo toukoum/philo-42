@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:27:48 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/10 17:26:17 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/11 10:12:09 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,6 @@ static int	alone_philo(t_philo *philo)
  */
 int	routine_philosopher(t_philo *philo)
 {
-	size_t	count_meal_perso;
-
-	count_meal_perso = 0;
 	if (philo->table->number_philo == 1)
 		return (alone_philo(philo));
 	if (pthread_create(&philo->handle_life, NULL, &handle_life, philo))
@@ -106,11 +103,7 @@ int	routine_philosopher(t_philo *philo)
 		ft_wait(philo->table->time_to_eat);
 	while (1)
 	{
-		if (philo->table->must_eat
-			&& count_meal_perso >= philo->table->must_eat)
-			sem_post(philo->table->sem_eat_full);
 		eat(philo);
-		count_meal_perso++;
 		ft_sleep(philo);
 		think(philo);
 	}

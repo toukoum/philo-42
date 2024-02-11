@@ -6,7 +6,7 @@
 /*   By: rgiraud <rgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:54:59 by rgiraud           #+#    #+#             */
-/*   Updated: 2024/02/10 16:36:29 by rgiraud          ###   ########.fr       */
+/*   Updated: 2024/02/11 09:58:11 by rgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
  * use fork() for duplicate process
  * use the ROUTINE function
  * (error) ? 1 : 0
- * launch also the child process for handling the life of the philo
  */
 static int	launch_simulation(t_philo **philos, t_table *table)
 {
